@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="hamburger-menu" onclick="toggleMenu()">&#9776;</div>
+        <nav class="menu" id="menu">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/todo">Todo</a></li>
+
+            </ul>
+        </nav>
+    </div>
+    <div class="container">
+        <h1>Welcome to Todo App</h1>
+        <p>This is the home page of our Todo App.</p>
+    </div>
+
+    <div class="menu-mobile" id="menu-mobile">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/todo">Todo</a></li>
+            <li><a href="/todo">Lex You Smell</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menuMobile = document.getElementById("menu-mobile");
+            if (menuMobile.style.display === "block") {
+                menuMobile.style.display = "none";
+            } else {
+                menuMobile.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+/* Reset styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header styles */
+header {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.logo {
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+}
+
+/* Task input styles */
+.task-input input[type="text"] {
+    width: calc(100% - 70px);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.task-input button {
+    padding: 10px 20px;
+    background-color: #5d5a5d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.task-input button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Task list styles */
+.task-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.task-item.selected {
+    background-color: rgba(0, 0, 255, 0.15);
+}
+
+.task-item.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+/* Task management styles */
+.task-management {
+    margin-top: 20px;
+}
+
+.task-btn {
+    padding: 10px 20px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.task-btn:hover {
+    background-color: #666;
+}
+
+/* Custom styles for task assignment */
+.task-assign-button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Custom styles for Callum's tasks */
+.callum-task {
+    background-color: #ffcccc; /* Light red */
+}
+
+/* Custom styles for Alexia's tasks */
+.alexia-task {
+    background-color: #8253bd; /* Light blue */
+}
+
+/* Select element styles */
+.select select {
+    appearance: none;
+    outline: none;
+    border: none;
+    background-color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.select select:hover {
+    background-color: #f2f2f2;
+}
+
+.select select:focus {
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #666;
+}

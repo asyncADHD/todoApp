@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_todo.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Todo List</h1>
+        <div class="logo">✓</div>
+    </header>
+
+    <main>
+        <div class="task-input">
+            <form id="addTaskForm">
+                <input id="taskInput" type="text" placeholder="Add a new task...">
+                <button type="submit" id="addTaskBtn">Add</button>
+            </form>
+        </div>
+
+        <ul id="activeTaskList" class="task-list">
+            <!-- Active task items will be added here dynamically -->
+            {% for task in active_tasks %}
+                <li class="task-item">{{ task }}</li>
+            {% endfor %}
+        </ul>
+
+        <ul id="completedTaskList" class="task-list">
+            <!-- Completed task items will be added here dynamically -->
+            {% for task in completed_tasks %}
+                <li class="task-item completed">{{ task }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="task-management">
+            <button id="completeBtn" class="task-btn">Complete Selected</button>
+            <button id="uncompleteBtn" class="task-btn">Uncomplete Selected</button>
+            <button id="deleteBtn" class="task-btn">Delete Selected</button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addTaskForm = document.getElementById("addTaskForm");
+            const taskInput = document.getElementById("taskInput");
+            const activeTaskList = document.getElementById("activeTaskList");
+            const completedTaskList = document.getElementById("completedTaskList");
+            const completeBtn = document.getElementById("completeBtn");
+            const deleteBtn = document.getElementById("deleteBtn");
+
+            // Function to handle form submission
+            addTaskForm.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent default form submission
+                const taskText = taskInput.value.trim();
+                if (taskText !== "") {
+                    // Send a POST request to the Flask route to add the task
+                    fetch('/add_task', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ task: taskText })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Add the task to the task list on the client-side
+                            addTaskToList(activeTaskList, taskText);
+                            taskInput.value = ""; // Clear the input field
+                        } else {
+                            console.error("Failed to add task:", data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                }
+            });
+
+            // Function to add a task to the task list
+            function addTaskToList(taskList, taskText) {
+                const li = document.createElement("li");
+                li.textContent = taskText;
+                li.classList.add("task-item");
+                taskList.appendChild(li);
+            }
+
+            // Event listener for clicking task items
+            activeTaskList.addEventListener("click", function(event) {
+                const clickedElement = event.target;
+                if (clickedElement.classList.contains("task-item")) {
+                    clickedElement.classList.toggle("selected");
+                }
+            });
+
+            completedTaskList.addEventListener("click", function(event) {
+                const clickedElement = event.target;
+                if (clickedElement.classList.contains("task-item")) {
+                    clickedElement.classList.toggle("selected");
+                }
+            });
+
+            // Event listener for Complete button
+            completeBtn.addEventListener("click", function() {
+                const selectedTasks = document.querySelectorAll("#activeTaskList .selected");
+                selectedTasks.forEach(task => {
+                    // Send a POST request to the Flask route to complete the task
+                    fetch('/complete_task', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ index: getIndex(task) })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            task.classList.toggle("completed");
+                            task.classList.remove("selected");
+                            completedTaskList.appendChild(task);
+                        } else {
+                            console.error("Failed to complete task:", data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                });
+            });
+
+            // Event listener for Uncomplete button
+            uncompleteBtn.addEventListener("click", function() {
+                const selectedCompletedTasks = document.querySelectorAll("#completedTaskList .selected");
+                selectedCompletedTasks.forEach(task => {
+                    // Send a POST request to the Flask route to uncomplete the task
+                    fetch('/uncomplete_task', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ index: getIndex(task) })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            task.classList.toggle("completed");
+                            task.classList.remove("selected");
+                            activeTaskList.appendChild(task);
+                        } else {
+                            console.error("Failed to uncomplete task:", data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                });
+            });
+
+            // Event listener for Delete button
+            deleteBtn.addEventListener("click", function() {
+                const selectedTasks = document.querySelectorAll("#activeTaskList .selected, #completedTaskList .selected");
+                selectedTasks.forEach(task => {
+                    // Send a POST request to the Flask route to delete the task
+                    fetch('/delete_task', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ index: getIndex(task) })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            task.remove();
+                        } else {
+                            console.error("Failed to delete task:", data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                });
+            });
+
+            // Function to get the index of a task element
+            function getIndex(taskElement) {
+                const taskItems = taskElement.parentElement.querySelectorAll('.task-item');
+                for (let i = 0; i < taskItems.length; i++) {
+                    if (taskItems[i] === taskElement) {
+                        return i;
+                    }
+                }
+                return -1; // Task element not found
+            }
+        });
+    </script>
+</body>
+</html>

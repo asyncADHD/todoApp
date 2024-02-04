@@ -1,0 +1,101 @@
+/* Reset some default styles */
+body, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the navbar */
+.navbar {
+    background-color: #444; /* Slightly lighter */
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Style the hamburger menu */
+.hamburger-menu {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Style the navigation menu */
+.menu ul {
+    list-style-type: none;
+}
+
+.menu ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.menu ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+.menu ul li a:hover {
+    background-color: #555;
+}
+
+/* Style the container for the main content */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Style headings */
+h1 {
+    color: #333;
+}
+
+/* Style paragraphs */
+p {
+    color: #666;
+}
+
+/* Style the mobile menu */
+.menu-mobile {
+    display: none;
+    background-color: rgba(51, 51, 51, 0.9); /* Translucent black */
+    position: absolute;
+    top: 50px; /* Adjust as needed */
+    left: 5px;
+    width: 150px; /* Adjust width as needed */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.menu-mobile ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu-mobile ul li {
+    margin-bottom: 10px;
+}
+
+.menu-mobile ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    display: block;
+}
+
+.menu-mobile ul li a:hover {
+    background-color: #555;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 600px) {
+    .menu-mobile {
+        display: block;
+    }
+
+    .menu {
+        display: none;
+    }
+}
